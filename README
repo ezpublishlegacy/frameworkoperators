@@ -9,3 +9,8 @@ Framework Operators is an extension that provides the custom operators that used
 = Dependencies
 --------------------------------------------------------------------------------------------
 - frameworkutilities
+
+
+= NOTES
+--------------------------------------------------------------------------------------------
+* The page_toppath.tpl file in ezwebin expects a "pagedata" template variable which is undefined at the point in which the pagedata operator calls the template.
