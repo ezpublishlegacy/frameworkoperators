@@ -8,7 +8,7 @@ class PageDataOperator
 	static protected $PersistentVariable=null;
 
 	function __construct(){
-		$this->Operators=array('pagedata', 'pagedata_set', 'pagedata_merge', 'pagedata_get', 'pagedata_delete', 'pagedata_exit');
+		$this->Operators = array('pagedata', 'pagedata_set', 'pagedata_merge', 'pagedata_get', 'pagedata_delete', 'pagedata_exit');
 	}
 
 	function &operatorList(){
@@ -65,12 +65,12 @@ class PageDataOperator
 				break;
 			}
 			case 'pagedata_get':{
-				$operatorValue=self::getPersistentVariable($namedParameters['variable']);
+				$operatorValue = self::getPersistentVariable($namedParameters['variable']);
 				if($namedParameters['delete']){
 					self::deletePersistentVariable($namedParameters['variable']);
 					// set the template persistent_variable to the new persistent_variable value
 					if($tpl->hasVariable('persistent_variable')){
-						$tpl->setVariable('persistent_variable',self::$PersistentVariable);
+						$tpl->setVariable('persistent_variable', self::$PersistentVariable);
 					}
 				}
 				break;
@@ -86,12 +86,12 @@ class PageDataOperator
 			case 'pagedata_exit':{
 				eZDebug::accumulatorStart('is_production', 'pagelayout_total', 'Production Server Check');
 				if(file_exists('/mnt/ebs/iamproduction.txt')){
-					$ShowDebug=false;
-					$ModuleParameters=PageData::moduleParameters();
+					$ShowDebug = false;
+					$ModuleParameters = PageData::moduleParameters();
 					if(isset($ModuleParameters['user_parameters'])  && isset($ModuleParameters['user_parameters']['debug'])){
-						$ShowDebug=$ModuleParameters['user_parameters']['debug']=='true';
+						$ShowDebug = $ModuleParameters['user_parameters']['debug']=='true';
 					}
-					$GLOBALS['eZDebugEnabled']=$ShowDebug;
+					$GLOBALS['eZDebugEnabled'] = $ShowDebug;
 				}
 //			if (file_exists("/mnt/ebs/iamproduction.txt")) {
 //				$GLOBALS['eZDebugEnabled'] = false;
@@ -105,9 +105,9 @@ class PageDataOperator
 				break;
 			}
 			default:{
-				eZDebug::createAccumulatorGroup('pagelayout_total','Page Layout Template Total');
+				eZDebug::createAccumulatorGroup('pagelayout_total', 'Page Layout Template Total');
 				eZDebug::accumulatorStart('pagelayout_total');
-				self::pagedata($tpl, $operatorValue, $namedParameters['params']?$namedParameters['params']:array());
+				self::pagedata($tpl, $operatorValue, $namedParameters['params'] ? $namedParameters['params'] : array());
 			}
 		}
 		return true;
@@ -122,7 +122,7 @@ class PageDataOperator
 			}
 			return true;
 		}elseif($key===true){
-			self::$PersistentVariable=null;
+			self::$PersistentVariable = null;
 			return true;
 		}
 		return false;
@@ -130,47 +130,47 @@ class PageDataOperator
 
 	// reusable function for getting persistent_variable
 	static public function getPersistentVariable($key=null){
-		return ($key!==null)?(isset(self::$PersistentVariable[$key])?self::$PersistentVariable[$key]:null):self::$PersistentVariable;
+		return ($key!==null) ? (isset(self::$PersistentVariable[$key]) ? self::$PersistentVariable[$key] : null) : self::$PersistentVariable;
 	}
 
 	// primary function to restrive information about the page
 	static public function pagedata($tpl, &$operatorValue, $parameters){
-		eZDebug::createAccumulatorGroup('pagedata_total','Page Data Total');
+		eZDebug::createAccumulatorGroup('pagedata_total', 'Page Data Total');
 
 		eZDebug::accumulatorStart('pagedata_total');
-		eZDebug::accumulatorStart('pagedata','pagedata_total','Page Data Class');
-		$PageData=new PageData($tpl, $parameters, $Result);
+		eZDebug::accumulatorStart('pagedata','pagedata_total', 'Page Data Class');
+		$PageData = new PageData($tpl, $parameters, $Result);
 		eZDebug::accumulatorStop('pagedata');
 
 //		eZDebug::writeDebug($PageData,'Page Data');
 
-		eZDebug::accumulatorStart('pagedata_operator','pagedata_total','Page Data Operator');
-		$CurrentNode=$PageData->getTemplateVariable('current_node');
+		eZDebug::accumulatorStart('pagedata_operator', 'pagedata_total', 'Page Data Operator');
+		$CurrentNode = $PageData->getTemplateVariable('current_node');
 
-		$hasTitleOverride=false;
+		$hasTitleOverride = false;
 		if($Result['is_content'] && $CurrentNodeID=$PageData->getTemplateVariable('current_node_id')){
-			$CurrentDataMap=$CurrentNode->dataMap();
+			$CurrentDataMap = $CurrentNode->dataMap();
 			// determine page title
-			eZDebug::accumulatorStart('title','pagedata_total','Page Title');
+			eZDebug::accumulatorStart('title', 'pagedata_total', 'Page Title');
 			if(isset($CurrentDataMap['meta_title']) && $CurrentDataMap['meta_title']->hasContent()){
-				$hasTitleOverride=true;
-				$Result['title']=$CurrentDataMap['meta_title']->content();
+				$hasTitleOverride = true;
+				$Result['title'] = $CurrentDataMap['meta_title']->content();
 			}else{
-				$Result['title']=preg_replace('/\n|\t/s','',TemplateDataOperator::includeTemplate($tpl, 'design:page_toppath.tpl', array(
-					'text_only'=>true,
-					'reverse'=>true,
-					'current_node'=>$CurrentNode
+				$Result['title'] = preg_replace('/\n|\t/s', '', TemplateDataOperator::includeTemplate($tpl, 'design:page_toppath.tpl', array(
+					'text_only' =>true,
+					'reverse' => true,
+					'current_node' => $CurrentNode
 				)));
 			}
 			eZDebug::accumulatorStop('title');
 
 			// determine page meta information
-			eZDebug::accumulatorStart('meta','pagedata_total','Page Meta Information');
+			eZDebug::accumulatorStart('meta', 'pagedata_total', 'Page Meta Information');
 			if($PageData->AllowedMetaNames && is_array($PageData->AllowedMetaNames) && count($PageData->AllowedMetaNames)){
 				foreach($PageData->TemplateVariables['site']['meta'] as $Key=>$Item){
 					if(!$Result['is_error'] && in_array($Key, $PageData->AllowedMetaNames)){
 							if(isset($CurrentDataMap["meta_$Key"]) && $CurrentDataMap["meta_$Key"]->hasContent()){
-								$PageData->TemplateVariables['site']['meta'][$key]=$CurrentDataMap["meta_$Key"]->content();
+								$PageData->TemplateVariables['site']['meta'][$key] = $CurrentDataMap["meta_$Key"]->content();
 								continue;
 							}
 					}
@@ -182,66 +182,73 @@ class PageDataOperator
 			eZDebug::accumulatorStop('meta');
 		}
 		if(!$hasTitleOverride){
-			$Result['title'].=' - '.$PageData->TemplateVariables['site']['title'];
+			$Result['title'] .= ' - '.$PageData->TemplateVariables['site']['title'];
 		}
 
 		// set infoboxes
 		if($PageData->useInfoboxes()){
-			eZDebug::createAccumulatorGroup('process_infoboxes','Process Infoboxes');
-			$InfoboxItems=array('left'=>array(),'right'=>array(),'top'=>array(),'bottom'=>array());
-			$InfoboxPositions=array_keys($InfoboxItems);
-			$InfoboxSettings=$PageData->InfoboxSettings;
-			$DefaultPosition=$InfoboxSettings['InfoboxDefaultPosition'];
-			$InfoboxTopNodeID=$InfoboxSettings['InfoboxTopNodeID'];
-			$InfoboxParameters=array('Depth'=>1,'SortBy'=>array('priority',true),'ClassFilterType'=>'include','ClassFilterArray'=>array('infobox'));
+			eZDebug::createAccumulatorGroup('process_infoboxes', 'Process Infoboxes');
+			$InfoboxItems = array('left'=>array(), 'right'=>array(), 'top'=>array(), 'bottom'=>array());
+			$InfoboxPositions = array_keys($InfoboxItems);
+			$InfoboxSettings = $PageData->InfoboxSettings;
+			$DefaultPosition = $InfoboxSettings['InfoboxDefaultPosition'];
+			$InfoboxTopNodeID = $InfoboxSettings['InfoboxTopNodeID'];
+			$InfoboxParameters = array(
+				'Depth' => 1,
+				'SortBy' => array('priority', true),
+				'ClassFilterType' => 'include',
+				'ClassFilterArray' => array('infobox')
+			);
 
-			$CurrentPath=array_reverse($CurrentNode->pathArray());
-			$InfoboxLimit=false;
+			$CurrentPath = array_reverse($CurrentNode->pathArray());
+			$InfoboxLimit = false;
 			do{
-				$PathNodeID=current($CurrentPath);
+				$PathNodeID = current($CurrentPath);
 				if($InfoboxSettings['InfoboxPersistence'] && ($PathNodeID!=$CurrentNode->NodeID)){
-					$InfoboxParameters=array_merge($InfoboxParameters, array('AttributeFilter'=>array(array('infobox/'.$InfoboxSettings['InfoboxPersistent'], '=', 1))));
+					$InfoboxParameters=array_merge($InfoboxParameters, array(
+						'AttributeFilter' => array(array('infobox/'.$InfoboxSettings['InfoboxPersistent'], '=', 1))
+					));
 				}
-				$InfoboxNodeList=eZContentObjectTreeNode::subTreeByNodeID($InfoboxParameters, $PathNodeID);
+				$InfoboxNodeList = eZContentObjectTreeNode::subTreeByNodeID($InfoboxParameters, $PathNodeID);
 				if($InfoboxNodeList){
 					if($InfoboxSettings['InfoboxPositioning']){
 						foreach($InfoboxNodeList as $InfoboxNode){
-							$Position=self::getInfoboxPosition($InfoboxNode, $InfoboxSettings['InfoboxPosition']);
+							$Position = self::getInfoboxPosition($InfoboxNode, $InfoboxSettings['InfoboxPosition']);
 							if(is_numeric($Position)){
-								$Position=$InfoboxPositions[$Position];
+								$Position = $InfoboxPositions[$Position];
 							}
-							$InfoboxItems[$Position][]=$InfoboxNode;
+							$InfoboxItems[$Position][] = $InfoboxNode;
 						}
 					}else{
-						$InfoboxItems[$DefaultPosition]=array_merge($InfoboxItems[$DefaultPosition], $InfoboxNodeList);
+						$InfoboxItems[$DefaultPosition] = array_merge($InfoboxItems[$DefaultPosition], $InfoboxNodeList);
 					}
 				}
 				// test "next" to break loop if at the end of the array
 				if(in_array($PathNodeID,$InfoboxTopNodeID) || (next($CurrentPath)===false)){
-					$InfoboxLimit=true;
+					$InfoboxLimit = true;
 				}
 			}while(!$InfoboxLimit);
 
-			$isInfoboxAccumulating=false;
+			$isInfoboxAccumulating = false;
 			foreach($InfoboxItems as $Key=>$Item){
-				$ItemCount=count($Item);
+				$ItemCount = count($Item);
 				if(!$ItemCount){
-					$InfoboxItems[$Key]=false;
+					$InfoboxItems[$Key] = false;
 					continue;
 				}
 				if($ItemCount){
 					if($InfoboxSettings['ProcessInfobox'] && isset($InfoboxSettings['InfoboxTemplate'])){
-						if(is_array($InfoboxItems[$Key])){$InfoboxItems[$Key]='';}
+						if(is_array($InfoboxItems[$Key])){$InfoboxItems[$Key] = '';}
 						if(!$isInfoboxAccumulating){
 //							eZDebug::addTimingPoint('Begin Processing Infoboxes');
-							eZDebug::accumulatorStart('process_infoboxes','pagedata_total','Process Infoboxes');
-							$isInfoboxAccumulating=true;
+							eZDebug::accumulatorStart('process_infoboxes', 'pagedata_total', 'Process Infoboxes');
+							$isInfoboxAccumulating = true;
 						}
 						foreach($Item as $Index=>$Infobox){
-							$InfoboxItems[$Key].=TemplateDataOperator::includeTemplate($tpl, 'design:'.$InfoboxSettings['InfoboxTemplate'],array('node'=>$Infobox));
+							$InfoboxItems[$Key] .= TemplateDataOperator::includeTemplate($tpl, 'design:'.$InfoboxSettings['InfoboxTemplate'], array('node'=>$Infobox));
 						}
 					}
-					$Result['has_infoboxes']=true;
+					$Result['has_infoboxes'] = true;
 				}
 			}
 			if($isInfoboxAccumulating){
@@ -251,31 +258,31 @@ class PageDataOperator
 
 			// check to make sure that "has_extrainfo" is set to true when there are infoboxes
 			if(!$Result['has_extrainfo'] && $Result['has_infoboxes']){
-				$Result['has_extrainfo']=true;
+				$Result['has_extrainfo'] = true;
 			}
 
-			$PageData->TemplateVariables['infoboxes']=$InfoboxItems;
+			$PageData->TemplateVariables['infoboxes'] = $InfoboxItems;
 		}
 
 		// set the new values for the site classes based on configured results
 		if($Result['homepage']){
-			$PageData->TemplateVariables['site_classes']['pagetype']='homepage';
+			$PageData->TemplateVariables['site_classes']['pagetype'] = 'homepage';
 		}
 		if($Result['has_sidebar']){
-			$PageData->TemplateVariables['site_classes']['sidebar']='sidebar';
+			$PageData->TemplateVariables['site_classes']['sidebar'] = 'sidebar';
 		}
 		if($Result['has_extrainfo']){
-			$PageData->TemplateVariables['site_classes']['extrainfo']='extrainfo';
+			$PageData->TemplateVariables['site_classes']['extrainfo'] = 'extrainfo';
 		}
 
 		// set the page title from a persistent value or the name of a content object tree node
-		$Result['page_title']=false;
+		$Result['page_title'] = false;
 		if($Result['is_content'] && !$PageData->isSectionRoot){
-			$PersistentPageTitle=$PageData->hasPersistentPageTitle();
-			$Result['page_title']=$PersistentPageTitle ? $PersistentPageTitle : $PageData->TemplateVariables['current_node']->Name;
+			$PersistentPageTitle = $PageData->hasPersistentPageTitle();
+			$Result['page_title'] = $PersistentPageTitle ? $PersistentPageTitle : $PageData->TemplateVariables['current_node']->Name;
 		}
 
-		$operatorValue=$Result;
+		$operatorValue = $Result;
 		PageData::setTemplateVariables($PageData, $tpl);
 
 		eZDebug::accumulatorStop('pagedata_operator');
@@ -287,25 +294,25 @@ class PageDataOperator
 	static public function setPersistentVariable($key, $value, $tpl, $append=false){
 		$PersistentVariable=array();
 		if($tpl->hasVariable('persistent_variable') && is_array($tpl->variable('persistent_variable'))){
-			$PersistentVariable=$tpl->variable('persistent_variable');
+			$PersistentVariable = $tpl->variable('persistent_variable');
 		}else if(self::$PersistentVariable!==null && is_array(self::$PersistentVariable)){
-			$PersistentVariable=self::$PersistentVariable;
+			$PersistentVariable = self::$PersistentVariable;
 		}
 		if($append){
 			if(isset($PersistentVariable[$key]) && is_array($PersistentVariable[$key])){
-				$PersistentVariable[$key][]=$value;
+				$PersistentVariable[$key][] = $value;
 			}else{
-				$PersistentVariable[$key]=array($value);
+				$PersistentVariable[$key] = array($value);
 			}
 		}else{
-			$PersistentVariable[$key]=$value;
+			$PersistentVariable[$key] = $value;
 		}
 		// storing the value internally as well in case this is not a view that supports persistent_variable (pagedata will look for it)
-		self::$PersistentVariable=$PersistentVariable;
+		self::$PersistentVariable = $PersistentVariable;
 	}
 
 	static private function getInfoboxPosition($node, $identifier){
-		$DataMap=$node->dataMap();
+		$DataMap = $node->dataMap();
 		return current($DataMap[$identifier]->content());
 	}
 

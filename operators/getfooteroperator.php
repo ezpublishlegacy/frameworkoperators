@@ -5,7 +5,7 @@ class GetFooterOperator
 	var $Operators;
 
 	function __construct(){
-	$this->Operators=array('get_footer');
+	$this->Operators = array('get_footer');
 	}
 
 	function &operatorList(){
@@ -25,18 +25,18 @@ class GetFooterOperator
 	}
 
 	function modify(&$tpl, &$operatorName, &$operatorParameters, &$rootNamespace, &$currentNamespace, &$operatorValue, &$namedParameters){
-		$DesignKeys=$tpl->Resources['design']->Keys;
-		$FooterParameters=array('ClassFilterType'=>'include', 'ClassFilterArray'=>array('footer'), 'Depth'=>1);
-		$ObjectNodeID=($namedParameters['reset'] && array_key_exists('node', $DesignKeys)) ? $DesignKeys['node'] : SiteUtils::ConfigSetting('NodeSettings', 'RootNode', 'content.ini');
+		$DesignKeys = $tpl->Resources['design']->Keys;
+		$FooterParameters = array('ClassFilterType' => 'include', 'ClassFilterArray' => array('footer'), 'Depth' => 1);
+		$ObjectNodeID = ($namedParameters['reset'] && array_key_exists('node', $DesignKeys)) ? $DesignKeys['node'] : SiteUtils::ConfigSetting('NodeSettings', 'RootNode', 'content.ini');
 			if ($namedParameters['reset']){
-				$ObjectNode=eZContentObjectTreeNode::fetch($ObjectNodeID);
+				$ObjectNode = eZContentObjectTreeNode::fetch($ObjectNodeID);
 				foreach(array_reverse($ObjectNode->pathArray()) as $PathNodeID){
 					if($FooterList=eZContentObjectTreeNode::subTreeByNodeID($FooterParameters, $PathNodeID)){break;}
 				}
 			}else{
-				$FooterList=eZContentObjectTreeNode::subTreeByNodeID($FooterParameters, $ObjectNodeID);
+				$FooterList = eZContentObjectTreeNode::subTreeByNodeID($FooterParameters, $ObjectNodeID);
 			}
-		$operatorValue=$FooterList[0];
+		$operatorValue = $FooterList[0];
 		return true;
 	}
 }
