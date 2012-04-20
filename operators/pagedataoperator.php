@@ -49,7 +49,7 @@ class PageDataOperator
 	function modify(&$tpl, &$operatorName, &$operatorParameters, &$rootNamespace, &$currentNamespace, &$operatorValue, &$namedParameters){
 		switch($operatorName){
 			case 'pagedata_set':{
-				if($namedParameters['allow_boolean'] || (!$namedParameters['allow_boolean'] && $value)){
+				if($namedParameters['allow_boolean'] || (!$namedParameters['allow_boolean'] && $Value)){
 					self::setPersistentVariable($namedParameters['key'], $namedParameters['value'], $tpl, $namedParameters['append']);
 				}
 				break;
@@ -57,7 +57,7 @@ class PageDataOperator
 			case 'pagedata_merge':{
 				if($namedParameters['hash']){
 					foreach($namedParameters['hash'] as $Key=>$Value){
-						if($namedParameters['allow_boolean'] || (!$namedParameters['allow_boolean'] && $value)){
+						if($namedParameters['allow_boolean'] || (!$namedParameters['allow_boolean'] && $Value)){
 							self::setPersistentVariable($Key, $Value, $tpl, $namedParameters['append']);
 						}
 					}
@@ -291,7 +291,7 @@ class PageDataOperator
 	}
 
 	// reusable function for setting persistent_variable
-	static public function setPersistentVariable($key, $value, $tpl, $append=false){
+	static public function setPersistentVariable($key, $Value, $tpl, $append=false){
 		$PersistentVariable=array();
 		if($tpl->hasVariable('persistent_variable') && is_array($tpl->variable('persistent_variable'))){
 			$PersistentVariable = $tpl->variable('persistent_variable');
@@ -300,12 +300,12 @@ class PageDataOperator
 		}
 		if($append){
 			if(isset($PersistentVariable[$key]) && is_array($PersistentVariable[$key])){
-				$PersistentVariable[$key][] = $value;
+				$PersistentVariable[$key][] = $Value;
 			}else{
-				$PersistentVariable[$key] = array($value);
+				$PersistentVariable[$key] = array($Value);
 			}
 		}else{
-			$PersistentVariable[$key] = $value;
+			$PersistentVariable[$key] = $Value;
 		}
 		// storing the value internally as well in case this is not a view that supports persistent_variable (pagedata will look for it)
 		self::$PersistentVariable = $PersistentVariable;
