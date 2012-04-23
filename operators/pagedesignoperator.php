@@ -70,17 +70,17 @@ class PageDesignOperator
 		// set default javascript files
 		$JavaScript=$JavaScriptSettings['LibraryScripts'];
 
+		// load cufon if cufon is being used
+		if(isset($JavaScriptSettings['CufonFontsList']) && $JavaScriptSettings['CufonFontsList']){
+			$tpl->setVariable('has_cufon',true);
+			$JavaScript = array_merge($JavaScript, array($JavaScriptSettings['CufonYUI']), $JavaScriptSettings['CufonFontsList']);
+		}
+
 		// load the site and page specific javascript files
 		if($JavaScriptSettings['FrontendJavaScriptList']){
 			$JavaScript = array_merge($JavaScript, $JavaScriptSettings['JavaScriptList'], $JavaScriptSettings['FrontendJavaScriptList']);
 		}else{
 			$JavaScript = array_merge($JavaScript, $JavaScriptSettings['JavaScriptList']);
-		}
-
-		// load cufon if cufon is being used
-		if(isset($JavaScriptSettings['CufonFontsList']) && $JavaScriptSettings['CufonFontsList']){
-			$tpl->setVariable('has_cufon',true);
-			$JavaScript = array_merge($JavaScript, array($JavaScriptSettings['CufonYUI']), $JavaScriptSettings['CufonFontsList']);
 		}
 
 		// remove excluded javascript files from the list
