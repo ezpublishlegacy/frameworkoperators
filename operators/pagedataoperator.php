@@ -51,6 +51,10 @@ class PageDataOperator
 			case 'pagedata_set':{
 				if($namedParameters['allow_boolean'] || (!$namedParameters['allow_boolean'] && $Value)){
 					self::setPersistentVariable($namedParameters['key'], $namedParameters['value'], $tpl, $namedParameters['append']);
+					// set the template persistent_variable to the new persistent_variable value
+					if($tpl->hasVariable('persistent_variable')){
+						$tpl->setVariable('persistent_variable', self::$PersistentVariable);
+					}
 				}
 				break;
 			}
@@ -61,13 +65,6 @@ class PageDataOperator
 							self::setPersistentVariable($Key, $Value, $tpl, $namedParameters['append']);
 						}
 					}
-				}
-				break;
-			}
-			case 'pagedata_get':{
-				$operatorValue = self::getPersistentVariable($namedParameters['variable']);
-				if($namedParameters['delete']){
-					self::deletePersistentVariable($namedParameters['variable']);
 					// set the template persistent_variable to the new persistent_variable value
 					if($tpl->hasVariable('persistent_variable')){
 						$tpl->setVariable('persistent_variable', self::$PersistentVariable);
@@ -75,12 +72,15 @@ class PageDataOperator
 				}
 				break;
 			}
+			case 'pagedata_get':{
+				$operatorValue = self::getPersistentVariable($namedParameters['variable']);
+				if($namedParameters['delete']){
+					self::deletePersistentVariable($namedParameters['variable']);
+				}
+				break;
+			}
 			case 'pagedata_delete':{
 				self::deletePersistentVariable($namedParameters['variable']);
-				// set the template persistent_variable to the new persistent_variable value
-				if($tpl->hasVariable('persistent_variable')){
-					$tpl->setVariable('persistent_variable', self::$PersistentVariable);
-				}
 				break;
 			}
 			case 'pagedata_exit':{
