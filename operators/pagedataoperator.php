@@ -217,7 +217,7 @@ class PageDataOperator
 							if(is_numeric($Position)){
 								$Position = $InfoboxPositions[$Position];
 							}
-							$InfoboxItems[$Position][] = $InfoboxNode;
+							$InfoboxItems[$Position ? $Position : $DefaultPosition][] = $InfoboxNode;
 						}
 					}else{
 						$InfoboxItems[$DefaultPosition] = array_merge($InfoboxItems[$DefaultPosition], $InfoboxNodeList);
