@@ -186,6 +186,11 @@ class PageData
 	function useInfoboxes(){
 		if($this->InfoboxSettings){
 			$InfoboxesEnabled = $this->InfoboxSettings['UseInfoboxes'];
+			if($this->isContent() && $ClassIdentifier = $this->getTemplateVariable('class_identifier')){
+				if(in_array($ClassIdentifier, $this->InfoboxSettings['ExcludeClassList'])){
+					return false;
+				}
+			}
 			return $InfoboxesEnabled && !$this->FullWidth;
 		}
 		return false;
