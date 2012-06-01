@@ -380,7 +380,7 @@ class PageData
 				eZDebug::writeWarning('Template persistent variable does not match the module result persistent variable.', 'PageData');
 			}
 		}
-		$TemplateVariables['persistent_variable'] = $PersistentVariable;
+		$TemplateVariables['persistent_variable'] = $PersistentVariable = $PersistentVariable['module_result'];
 
 		// determine the current user
 		// if not defined as a variable in the template, call the current user
