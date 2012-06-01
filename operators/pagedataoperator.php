@@ -170,7 +170,7 @@ class PageDataOperator
 				foreach($PageData->TemplateVariables['site']['meta'] as $Key=>$Item){
 					if(!$Result['is_error'] && in_array($Key, $PageData->AllowedMetaNames)){
 							if(isset($CurrentDataMap["meta_$Key"]) && $CurrentDataMap["meta_$Key"]->hasContent()){
-								$PageData->TemplateVariables['site']['meta'][$key] = $CurrentDataMap["meta_$Key"]->content();
+								$PageData->TemplateVariables['site']['meta'][$Key] = $CurrentDataMap["meta_$Key"]->content();
 								continue;
 							}
 					}
