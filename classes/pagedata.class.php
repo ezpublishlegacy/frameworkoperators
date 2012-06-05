@@ -440,6 +440,15 @@ class PageData
 				$hasSidebar = $object->hasSidebar = $hasSidemenu ? ($object->MenuSettings['SideMenuPosition']=='left') : false;
 				$hasExtrainfo = $object->hasExtrainfo = $hasSidemenu ? ($object->MenuSettings['SideMenuPosition']=='right') : false;
 			}
+			foreach(array_reverse($CurrentNode->pathArray()) as $ID){
+				if($PathNode = eZContentObjectTreeNode::fetch($ID)){
+					$DataMap = $PathNode->dataMap();
+					if(isset($DataMap['hide_sidemenu']) && $DataMap['hide_sidemenu']->DataInt){
+						$object->hasSidemenu = false;
+						break;
+					}
+				}
+			}
 			if($PersistentVariable){
 				if(isset($PersistentVariable['sidebar'])){
 					$object->hasSidebar = !($PersistentVariable['sidebar']==='null' || $PersistentVariable['sidebar']===false);
