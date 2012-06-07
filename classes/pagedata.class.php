@@ -380,7 +380,10 @@ class PageData
 				eZDebug::writeWarning('Template persistent variable does not match the module result persistent variable.', 'PageData');
 			}
 		}
-		$TemplateVariables['persistent_variable'] = $PersistentVariable = $PersistentVariable['module_result'];
+		if(isset($PersistentVariable['module_result'])){
+			$PersistentVariable = $PersistentVariable['module_result'];
+		}
+		$TemplateVariables['persistent_variable'] = $PersistentVariable;
 
 		// determine the current user
 		// if not defined as a variable in the template, call the current user
@@ -449,13 +452,14 @@ class PageData
 					}
 				}
 			}
-			if($PersistentVariable){
-				if(isset($PersistentVariable['sidebar'])){
-					$object->hasSidebar = !($PersistentVariable['sidebar']==='null' || $PersistentVariable['sidebar']===false);
-				}
-				if(isset($PersistentVariable['extrainfo'])){
-					$object->hasExtrainfo = !($PersistentVariable['extrainfo']==='null' || $PersistentVariable['extrainfo']===false);
-				}
+		}
+
+		if($PersistentVariable){
+			if(isset($PersistentVariable['sidebar'])){
+				$object->hasSidebar = !($PersistentVariable['sidebar']==='null' || $PersistentVariable['sidebar']===false);
+			}
+			if(isset($PersistentVariable['extrainfo'])){
+				$object->hasExtrainfo = !($PersistentVariable['extrainfo']==='null' || $PersistentVariable['extrainfo']===false);
 			}
 		}
 
