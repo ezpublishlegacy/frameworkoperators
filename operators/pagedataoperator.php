@@ -256,6 +256,11 @@ class PageDataOperator
 				eZDebug::accumulatorStop('process_infoboxes');
 			}
 
+			// check to make sure that "has_sidebar" is set to true when there are infoboxes
+			if(!$Result['has_sidebar'] && $Result['has_infoboxes'] && $InfoboxItems['left']){
+				$Result['has_sidebar'] = true;
+			}
+
 			// check to make sure that "has_extrainfo" is set to true when there are infoboxes
 			if(!$Result['has_extrainfo'] && $Result['has_infoboxes'] && $InfoboxItems['right']){
 				$Result['has_extrainfo'] = true;

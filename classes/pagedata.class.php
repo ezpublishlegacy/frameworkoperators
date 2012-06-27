@@ -447,7 +447,7 @@ class PageData
 				if($PathNode = eZContentObjectTreeNode::fetch($ID)){
 					$DataMap = $PathNode->dataMap();
 					if(isset($DataMap['hide_sidemenu']) && $DataMap['hide_sidemenu']->DataInt){
-						$object->hasSidemenu = false;
+						$object->hasSidebar = $object->hasSidemenu = false;
 						break;
 					}
 				}
