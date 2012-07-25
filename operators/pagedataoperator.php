@@ -313,7 +313,12 @@ class PageDataOperator
 			$PersistentVariable[$key] = $Value;
 		}
 		// storing the value internally as well in case this is not a view that supports persistent_variable (pagedata will look for it)
+		eZDebug::writeDebug($PersistentVariable);
 		self::$PersistentVariable = $PersistentVariable;
+		// set the template persistent_variable to the new persistent_variable value
+		if($tpl->hasVariable('persistent_variable')){
+			$tpl->setVariable('persistent_variable', self::$PersistentVariable);
+		}
 	}
 
 	static private function getInfoboxPosition($node, $identifier){
