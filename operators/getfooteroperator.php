@@ -30,6 +30,11 @@ class GetFooterOperator
 		$ObjectNodeID = ($namedParameters['reset'] && array_key_exists('node', $DesignKeys)) ? $DesignKeys['node'] : SiteUtils::ConfigSetting('NodeSettings', 'RootNode', 'content.ini');
 			if ($namedParameters['reset']){
 				$ObjectNode = eZContentObjectTreeNode::fetch($ObjectNodeID);
+				if (!is_object($ObjectNode)) {
+					$operatorValue = false;
+					eZDebug::writeDebug("Footer node $ObjectNodeID not available!");
+					return true;
+				}
 				foreach(array_reverse($ObjectNode->pathArray()) as $PathNodeID){
 					if($FooterList=eZContentObjectTreeNode::subTreeByNodeID($FooterParameters, $PathNodeID)){break;}
 				}
