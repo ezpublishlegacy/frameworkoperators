@@ -498,7 +498,7 @@ class PageData
 			'main_area'=>'main-area',
 			'content_view'=>$TemplateVariables['site_classes']['content_view'],
 			'class_type'=>$TemplateVariables['site_classes']['class_type'],
-			'error_code'=>$object->isError() ? $object->ErrorData['error_code'] : null
+			'error_code'=>$object->isError() ? 'error-code-'.$object->ErrorData['error_code'] : null
 		);
 		if($TemplateVariables['module_result']){
 			$TemplateVariables['site_classes']['section'] = isset($TemplateVariables['module_result']['section_id']) ? 'section-id-'.$TemplateVariables['module_result']['section_id'] : 'nosection';
