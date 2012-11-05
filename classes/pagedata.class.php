@@ -209,7 +209,8 @@ class PageData
 
 	static function moduleParameters($userParameters=true){
 		if($userParameters){
-			return array_merge($GLOBALS['eZRequestedModuleParams'], array('user_parameters'=>$GLOBALS['module']->UserParameters));
+			$Module = isset($GLOBALS['eZRequestedModule']) ? $GLOBALS['eZRequestedModule'] : $GLOBALS['module'];
+			return array_merge($GLOBALS['eZRequestedModuleParams'], array('user_parameters'=>$Module->UserParameters));
 		}
 		return $GLOBALS['eZRequestedModuleParams'];
 	}
