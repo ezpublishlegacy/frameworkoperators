@@ -88,6 +88,11 @@ class PageDesignOperator
 			$JavaScript = array_diff($JavaScript, $JavaScriptSettings['ExcludeJavaScriptList']);
 		}
 
+		if($JavaScriptSettings['LocalScripts']){
+			$eZJSCore = eZINI::instance('ezjscore.ini');
+			$eZJSCore->setVariable('eZJSCore', 'LocalScripts', array_merge($eZJSCore->variable('eZJSCore', 'LocalScripts'), $JavaScriptSettings['LocalScripts']));
+		}
+
 		return $JavaScript;
 	}
 
