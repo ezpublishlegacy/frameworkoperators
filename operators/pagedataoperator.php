@@ -186,7 +186,7 @@ class PageDataOperator
 		}
 
 		// set infoboxes
-		if($PageData->useInfoboxes()){
+		if($PageData->useInfoboxes() && is_object($CurrentNode)){
 			eZDebug::createAccumulatorGroup('process_infoboxes', 'Process Infoboxes');
 			$InfoboxItems = array('left'=>array(), 'right'=>array(), 'top'=>array(), 'bottom'=>array());
 			$InfoboxPositions = array_keys($InfoboxItems);
