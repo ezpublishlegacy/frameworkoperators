@@ -73,7 +73,7 @@ class PageDataOperator
 				break;
 			}
 			case 'pagedata_get':{
-				$operatorValue = self::getPersistentVariable($namedParameters['variable']);
+				$operatorValue = self::getPersistentVariable($tpl, $namedParameters['variable']);
 				if($namedParameters['delete']){
 					self::deletePersistentVariable($namedParameters['variable']);
 				}
@@ -129,8 +129,16 @@ class PageDataOperator
 	}
 
 	// reusable function for getting persistent_variable
-	static public function getPersistentVariable($key=null){
-		return ($key!==null) ? (isset(self::$PersistentVariable[$key]) ? self::$PersistentVariable[$key] : null) : self::$PersistentVariable;
+	static public function getPersistentVariable($tpl, $key=null){
+		if(!$Value = ($key!==null) ? (isset(self::$PersistentVariable[$key]) ? self::$PersistentVariable[$key] : null) : self::$PersistentVariable) {
+			$Value = null;
+			if($tpl && $tpl->hasVariable('module_result') && $ModuleResult = $tpl->variable('module_result')) {
+				if(isset($ModuleResult['content_info']['persistent_variable']) && isset($ModuleResult['content_info']['persistent_variable'][$key])) {
+					$Value = $ModuleResult['content_info']['persistent_variable'][$key];
+				}
+			}
+		}
+		return $Value;
 	}
 
 	// primary function to restrive information about the page
