@@ -22,6 +22,7 @@ class PageData
 		$this->InfoboxSettings = false;
 		$this->TemplateVariables = false;
 		$this->SectionRootClassList = false;
+		$this->Tpl = $tpl;
 
 		$this->hasSidemenu = false;
 		$this->hasSidebar = false;
@@ -91,7 +92,7 @@ class PageData
 
 	function getPersistentVariable($parameters=false){
 		$Default = $parameters ? $parameters : array();
-		$OperatorVariable = PageDataOperator::getPersistentVariable();
+		$OperatorVariable = PageDataOperator::getPersistentVariable($this->Tpl);
 		if(!$this->hasProcessedParameters){
 			if($ModuleResult = $this->TemplateVariables['module_result']){
 				if(isset($ModuleResult['content_info']) && isset($ModuleResult['content_info']['persistent_variable']) && $ModuleResult['content_info']['persistent_variable']){
