@@ -237,6 +237,20 @@ class PageDataOperator
 				}
 			}while(!$InfoboxLimit);
 
+			$layout = eZINI::instance('layout.ini');
+			if($layout->variable('InfoboxSettings','InfoboxSort')==='enabled'){
+				$orderedInfoboxItems = array();
+				foreach($InfoboxItems as $key => $InfoboxItem){
+					if($InfoboxItem){
+						foreach($InfoboxItem as $contentObject){
+							$orderedInfoboxItems[ $contentObject->Priority ] = $contentObject;
+						}
+						ksort($orderedInfoboxItems);
+						$InfoboxItems[$key] = $orderedInfoboxItems;
+					}
+				}
+			}
+
 			$isInfoboxAccumulating = false;
 			foreach($InfoboxItems as $Key=>$Item){
 				$ItemCount = count($Item);
