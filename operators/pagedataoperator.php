@@ -239,9 +239,9 @@ class PageDataOperator
 
 			$layout = eZINI::instance('layout.ini');
 			if($layout->variable('InfoboxSettings','InfoboxSort')==='enabled'){
-				$orderedInfoboxItems = array();
 				foreach($InfoboxItems as $key => $InfoboxItem){
 					if($InfoboxItem){
+						$orderedInfoboxItems = array();
 						foreach($InfoboxItem as $contentObject){
 							$orderedInfoboxItems[ $contentObject->Priority ] = $contentObject;
 						}
