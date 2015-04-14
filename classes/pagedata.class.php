@@ -150,8 +150,11 @@ class PageData
 	function isContent(){
 		$NonContentViews=array('dashboard', 'search');
 		$NonContentModes=array('sitemap', 'tagcloud');
-		if($this->ModuleParameters['module_name']=='content' && !in_array($this->ModuleParameters['function_name'], $NonContentViews)){
-			if($ViewMode = $this->viewMode()){
+
+		if( $this->ModuleParameters['module_name'] == 'content' ) {
+			if( $this->ModuleParameters['function_name'] == 'versionview' ) {
+				return true;
+			} else if ( !in_array( $this->ModuleParameters['function_name'], $NonContentViews ) && ( $ViewMode = $this->ViewMode() ) !== false ) {
 				return !in_array($ViewMode, $NonContentModes);
 			}
 		}
