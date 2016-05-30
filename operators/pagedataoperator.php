@@ -238,7 +238,7 @@ class PageDataOperator
 			}while(!$InfoboxLimit);
 
 			$layout = eZINI::instance('layout.ini');
-			if($layout->variable('InfoboxSettings','InfoboxSort')==='enabled'){
+			if($layout->hasVariable('InfoboxSettings','InfoboxSort') && $layout->variable('InfoboxSettings','InfoboxSort')==='enabled'){
 				foreach($InfoboxItems as $key => $InfoboxItem){
 					if($InfoboxItem){
 						$orderedInfoboxItems = array();
